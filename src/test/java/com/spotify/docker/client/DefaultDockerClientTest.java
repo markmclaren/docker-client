@@ -4399,7 +4399,10 @@ public class DefaultDockerClientTest {
                 .build())
             .build())
         .build();
+
+    final int startingNumServices = sut.listServices().size();
     sut.createService(spec);
+    await().until(numberOfTasks(sut), is(greaterThan(startingNumServices)));
 
     final Service service = sut.inspectService(name);
     final Endpoint endpoint = service.endpoint();
